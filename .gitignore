@@ -1,0 +1,13 @@
+node_modules
+dist
+.vite
+vite-dev.log
+.env
+.env.local
+__pycache__
+.venv
+.deps
+.pip-cache
+.tmp
+*.pyc
+src-tauri/target

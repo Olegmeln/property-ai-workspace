@@ -1,0 +1,12 @@
+backend
+src-tauri
+node_modules
+dist
+.git
+.env
+.env.local
+.env.*.local
+*.md
+docker-compose*.yml
+Dockerfile
+.dockerignore

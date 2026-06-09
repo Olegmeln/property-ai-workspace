@@ -1,7 +1,17 @@
-from app.models.schemas import Listing
+"""
+Legacy normalizer: используется только старым фронтом через /normalize.
+Новые агенты используют ranker (будет в следующем PR).
+"""
+
+from app.models.schemas import Listing, StructuredQuery
 
 
-def normalize_listing_results(listings: list[Listing], params: dict) -> list[Listing]:
+def normalize_listing_results(
+    listings: list[Listing],
+    params: dict,
+    query: StructuredQuery | None = None,
+) -> list[Listing]:
+    _ = (params, query)  # пока не используем
     normalized = [
         Listing(
             **{

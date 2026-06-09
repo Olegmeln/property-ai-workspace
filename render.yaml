@@ -1,0 +1,34 @@
+# Render Blueprint для Property AI Workspace.
+#
+# Чтобы развернуть:
+#  1. Создай аккаунт на render.com (можно через GitHub).
+#  2. Dashboard → New → Blueprint → выбрать этот репозиторий.
+#  3. Render прочитает этот файл и создаст веб-сервис.
+#  4. После создания добавь env-переменные ANTHROPIC_API_KEY и RAPIDAPI_KEY
+#     в Settings → Environment (как secret, не plain).
+#
+# Free tier: web-сервис «засыпает» после 15 минут простоя и просыпается
+# при первом запросе (cold start ~30 секунд). Этого достаточно для MVP.
+# Для постоянной работы — Starter план $7/мес.
+
+services:
+  - type: web
+    name: property-ai-api
+    runtime: docker
+    plan: free
+    region: frankfurt          # ближе к Армении/ОАЭ, чем Орегон
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      # ANTHROPIC_API_KEY и RAPIDAPI_KEY НЕ декларируем здесь —
+      # их нужно добавить вручную в Settings → Environment, чтобы они
+      # не попали в Git. Render даст для них поле sync:false и secret.
+      - key: ANTHROPIC_MODEL
+        value: claude-sonnet-4-20250514
+      - key: ALLOWED_ORIGINS
+        value: https://property-ai-workspace.vercel.app,http://localhost:5173,http://127.0.0.1:5173
+      - key: PYTHONUNBUFFERED
+        value: "1"

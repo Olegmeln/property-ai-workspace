@@ -9,40 +9,47 @@ import type { Listing } from "../types";
 import { compactCurrency } from "../lib/utils";
 import { Button } from "../components/ui/button";
 import { MapView } from "./MapView";
+import { useT } from "../i18n";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export function ResultsPanel() {
+  const { t } = useT();
   const results = useWorkspaceStore((state) => state.results);
   const view = useWorkspaceStore((state) => state.layout.resultsView);
   const setResultsView = useWorkspaceStore((state) => state.setResultsView);
   const columnDefs = useMemo<ColDef<Listing>[]>(
     () => [
-      { field: "title", headerName: "Listing", flex: 1.4 },
+      { field: "title", headerName: t("results.col.listing"), flex: 1.4 },
       { field: "price", valueFormatter: ({ value }) => compactCurrency(Number(value)), width: 140 },
-      { field: "area", headerName: "Area", valueFormatter: ({ value }) => `${value} sqft`, width: 120 },
+      {
+        field: "area",
+        headerName: t("results.col.area"),
+        valueFormatter: ({ value }) => t("results.col.areaSqft", { value: Number(value) }),
+        width: 120
+      },
       { field: "rooms", width: 110 },
       { field: "district", width: 140 },
       { field: "score", width: 110 }
     ],
-    []
+    [t]
   );
 
   return (
     <div className="flex h-full min-h-0 flex-col border-t border-workspace-border bg-[#0B0E14]">
       <div className="flex h-12 items-center justify-between border-b border-workspace-border px-4">
         <div>
-          <h2 className="text-sm font-semibold text-white">Results</h2>
-          <p className="text-xs text-slate-500">{results.length} normalized listings</p>
+          <h2 className="text-sm font-semibold text-white">{t("results.title")}</h2>
+          <p className="text-xs text-slate-500">{t("results.count", { count: results.length })}</p>
         </div>
         <div className="flex gap-2">
           <Button variant={view === "table" ? "primary" : "panel"} size="sm" onClick={() => setResultsView("table")}>
             <Table2 className="h-4 w-4" />
-            Table
+            {t("results.table")}
           </Button>
           <Button variant={view === "map" ? "primary" : "panel"} size="sm" onClick={() => setResultsView("map")}>
             <Map className="h-4 w-4" />
-            Map
+            {t("results.map")}
           </Button>
         </div>
       </div>

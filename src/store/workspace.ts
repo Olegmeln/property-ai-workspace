@@ -10,6 +10,7 @@ import {
 import { buildQuery, normalizeListings, searchListings } from "../api/client";
 import { fallbackNormalize, fallbackQuery, fallbackSearch } from "../api/fallback";
 import { getAgentTemplate } from "../agents/templates";
+import { tStandalone } from "../i18n/standalone";
 import type {
   AddAgentInput,
   AgentData,
@@ -38,6 +39,7 @@ interface WorkspaceState {
   onConnect: (connection: Connection) => void;
   updateAgentParams: (agentId: string, params: Record<string, unknown>) => void;
   setResultsView: (view: WorkspaceLayout["resultsView"]) => void;
+  setUserPrompt: (prompt: string) => void;
   sendChatMessage: (message: string) => Promise<void>;
   runPipeline: () => Promise<void>;
 }
@@ -76,7 +78,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     {
       id: makeId("msg"),
       role: "assistant",
-      content: "Workspace ready. Select an agent and send instructions, or run the pipeline.",
+      content: tStandalone("chat.welcome"),
       agentId: initialNodes[0].id
     }
   ],
@@ -118,6 +120,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   setResultsView: (resultsView) => {
     set((state) => ({ layout: { ...state.layout, resultsView } }));
   },
+  setUserPrompt: (prompt) => set({ userPrompt: prompt }),
   sendChatMessage: async (message) => {
     const { activeAgentId, updateAgentParams } = get();
     const userMessage: ChatMessage = {
@@ -144,8 +147,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           role: "assistant",
           agentId: activeAgentId,
           content: activeAgentId
-            ? "Updated the selected agent context. Run the pipeline to apply it."
-            : "Select an agent first, then send instructions to tune its behavior."
+            ? tStandalone("chat.applied")
+            : tStandalone("chat.selectAgent")
         }
       ]
     }));

@@ -3,8 +3,10 @@ import { SendHorizonal } from "lucide-react";
 import { useWorkspaceStore } from "../store/workspace";
 import { Button } from "../components/ui/button";
 import { Textarea } from "../components/ui/textarea";
+import { useT } from "../i18n";
 
 export function ChatPanel() {
+  const { t } = useT();
   const [message, setMessage] = useState("");
   const messages = useWorkspaceStore((state) => state.chatMessages);
   const sendChatMessage = useWorkspaceStore((state) => state.sendChatMessage);
@@ -20,8 +22,8 @@ export function ChatPanel() {
   return (
     <div className="flex h-full min-h-0 flex-col border-l border-workspace-border bg-[#0B0E14]">
       <div className="border-b border-workspace-border px-4 py-3">
-        <h2 className="text-sm font-semibold text-white">AI Chat</h2>
-        <p className="text-xs text-slate-500">Messages apply to the selected agent</p>
+        <h2 className="text-sm font-semibold text-white">{t("chat.title")}</h2>
+        <p className="text-xs text-slate-500">{t("chat.hint")}</p>
       </div>
       <div className="min-h-0 flex-1 space-y-3 overflow-auto p-3">
         {messages.map((item) => (
@@ -41,12 +43,12 @@ export function ChatPanel() {
         <Textarea
           value={message}
           onChange={(event) => setMessage(event.target.value)}
-          placeholder="Example: set budget under 700k and districts: SoCo, Mueller"
+          placeholder={t("chat.placeholder")}
         />
         <div className="mt-2 flex justify-end">
           <Button type="submit" size="sm">
             <SendHorizonal className="h-4 w-4" />
-            Send
+            {t("chat.send")}
           </Button>
         </div>
       </form>

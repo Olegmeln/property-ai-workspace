@@ -2,8 +2,10 @@ import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { Listing } from "../types";
+import { useT } from "../i18n";
 
 export function MapView({ listings }: { listings: Listing[] }) {
+  const { t } = useT();
   const mapRef = useRef<HTMLDivElement>(null);
   const token = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
@@ -35,11 +37,8 @@ export function MapView({ listings }: { listings: Listing[] }) {
     return (
       <div className="grid h-full place-items-center rounded-2xl border border-workspace-border bg-[#111620] p-6 text-center">
         <div>
-          <p className="text-sm font-semibold text-white">Mapbox token not configured</p>
-          <p className="mt-2 max-w-md text-sm leading-6 text-slate-400">
-            Add VITE_MAPBOX_TOKEN to render the live map. The app still stores listing coordinates and can plot them once
-            a token is present.
-          </p>
+          <p className="text-sm font-semibold text-white">{t("map.noTokenTitle")}</p>
+          <p className="mt-2 max-w-md text-sm leading-6 text-slate-400">{t("map.tokenRequired")}</p>
         </div>
       </div>
     );
@@ -48,7 +47,7 @@ export function MapView({ listings }: { listings: Listing[] }) {
   if (listings.length === 0) {
     return (
       <div className="grid h-full place-items-center rounded-2xl border border-workspace-border bg-[#111620] text-sm text-slate-500">
-        Run the pipeline to plot listings.
+        {t("map.runHint")}
       </div>
     );
   }

@@ -2,10 +2,20 @@ import type { NodeProps } from "reactflow";
 import { Handle, Position } from "reactflow";
 import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { agentIcons } from "../agents/templates";
-import type { AgentData } from "../types";
+import type { AgentData, AgentType } from "../types";
+import { useT } from "../i18n";
+
+const TYPE_TO_KEY: Record<AgentType, string> = {
+  "query-builder": "agent.queryBuilder",
+  "listing-search": "agent.listingSearch",
+  "result-normalizer": "agent.resultNormalizer"
+};
 
 export function AgentNode({ data, selected }: NodeProps<AgentData>) {
+  const { t } = useT();
   const Icon = agentIcons[data.type];
+  const titleKey = `${TYPE_TO_KEY[data.type]}.title`;
+  const descKey = `${TYPE_TO_KEY[data.type]}.description`;
 
   return (
     <div
@@ -20,10 +30,10 @@ export function AgentNode({ data, selected }: NodeProps<AgentData>) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-3">
-            <h3 className="truncate text-sm font-semibold text-white">{data.title}</h3>
+            <h3 className="truncate text-sm font-semibold text-white">{t(titleKey)}</h3>
             <StatusIcon status={data.status} />
           </div>
-          <p className="mt-1 text-xs leading-5 text-slate-400">{data.description}</p>
+          <p className="mt-1 text-xs leading-5 text-slate-400">{t(descKey)}</p>
         </div>
       </div>
       <div className="mt-4 grid grid-cols-2 gap-2">

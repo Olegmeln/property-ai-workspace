@@ -86,5 +86,58 @@ export const en: Dict = {
   "createAgent.recent": "Or pick a recent template",
 
   // Common
-  "common.close": "Close"
+  "common.close": "Close",
+  "common.expand": "Expand",
+  "common.collapse": "Collapse",
+  "common.back": "Back",
+
+  // Country picker
+  "country.label": "Country",
+  "country.AE": "UAE",
+  "country.AM": "Armenia",
+  "country.GE": "Georgia",
+
+  // Sidebar
+  "sidebar.projects": "Projects",
+  "sidebar.newProject": "New project",
+  "sidebar.empty": "No projects yet. Create one from the prompt box.",
+
+  // Prompt bar
+  "prompt.label": "Prompt",
+  "prompt.placeholder": "Describe what to find. Example: Find me a 2-bedroom apartment in Dubai under 800k AED",
+  "prompt.send": "Create project",
+  "prompt.hint": "New project will use country: {country}",
+
+  // Project canvas
+  "project.empty.title": "No active project",
+  "project.empty.hint": "Type your request in the prompt box below to create your first project.",
+  "project.steps.refiner": "Refine Request",
+  "project.steps.refinerSub": "Structures free text into a brief",
+  "project.steps.strategy": "Pick Strategy",
+  "project.steps.strategySub": "Chooses sources to query",
+  "project.steps.search": "Search",
+  "project.steps.searchSub": "Parallel agents across sources",
+  "project.steps.results": "Results",
+  "project.steps.resultsSub": "Final ranked listings",
+  "project.agents.count": "{count} agents",
+  "project.agents.one": "1 agent",
+  "project.openStep": "Open",
+  "project.status.idle": "idle",
+  "project.status.running": "running",
+  "project.status.done": "done",
+  "project.status.error": "error",
+  "project.listingsFound": "{count} listings found",
+
+  // Step detail (expanded)
+  "stepDetail.agents": "Agents on this step",
+  "stepDetail.output": "Output",
+  "stepDetail.results.title": "Search results",
+  "stepDetail.results.subtitle": "Top {count} listings from selected sources",
+  "stepDetail.noOutput": "No output yet. Run the pipeline.",
+  "stepDetail.errorTitle": "Step failed",
+
+  // Online indicator
+  "online.connected": "AI Online",
+  "online.disconnected": "AI Offline",
+  "online.checking": "Checking..."
 };

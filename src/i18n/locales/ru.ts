@@ -88,5 +88,58 @@ export const ru: Dict = {
   "createAgent.recent": "Или выберите шаблон",
 
   // Common
-  "common.close": "Закрыть"
+  "common.close": "Закрыть",
+  "common.expand": "Развернуть",
+  "common.collapse": "Свернуть",
+  "common.back": "Назад",
+
+  // Country picker
+  "country.label": "Страна",
+  "country.AE": "ОАЭ",
+  "country.AM": "Армения",
+  "country.GE": "Грузия",
+
+  // Sidebar
+  "sidebar.projects": "Проекты",
+  "sidebar.newProject": "Новый проект",
+  "sidebar.empty": "Проектов пока нет. Создайте проект через поле промпта.",
+
+  // Prompt bar
+  "prompt.label": "Промпт",
+  "prompt.placeholder": "Опишите, что нужно найти. Пример: Найди 2-комн. квартиру в Дубае до 800k AED",
+  "prompt.send": "Создать проект",
+  "prompt.hint": "Новый проект будет создан в стране: {country}",
+
+  // Project canvas
+  "project.empty.title": "Активного проекта нет",
+  "project.empty.hint": "Введите запрос в поле промпта ниже, чтобы создать первый проект.",
+  "project.steps.refiner": "Уточнение запроса",
+  "project.steps.refinerSub": "Превращает свободный текст в бриф",
+  "project.steps.strategy": "Выбор стратегии",
+  "project.steps.strategySub": "Подбирает источники для опроса",
+  "project.steps.search": "Поиск",
+  "project.steps.searchSub": "Параллельные агенты по источникам",
+  "project.steps.results": "Результаты",
+  "project.steps.resultsSub": "Финальный отранжированный список",
+  "project.agents.count": "{count} агентов",
+  "project.agents.one": "1 агент",
+  "project.openStep": "Открыть",
+  "project.status.idle": "ожидает",
+  "project.status.running": "выполняется",
+  "project.status.done": "готово",
+  "project.status.error": "ошибка",
+  "project.listingsFound": "найдено объектов: {count}",
+
+  // Step detail (expanded)
+  "stepDetail.agents": "Агенты на этом шаге",
+  "stepDetail.output": "Результат шага",
+  "stepDetail.results.title": "Результаты поиска",
+  "stepDetail.results.subtitle": "Топ {count} объектов из выбранных источников",
+  "stepDetail.noOutput": "Результата пока нет. Запустите проект.",
+  "stepDetail.errorTitle": "Шаг завершился ошибкой",
+
+  // Online indicator
+  "online.connected": "AI Online",
+  "online.disconnected": "AI Offline",
+  "online.checking": "Проверка..."
 };

@@ -59,6 +59,18 @@ def make_strategy(request: StrategizeRequest):
 def search(request: SearchRequest):
     strategy = request.strategy or strategize(request.query)
     listings = orchestrator.execute(strategy, target_count=request.query.target_count)
+
+    try:
+        from app.db.connection import get_connection
+        from app.services.listings_store import record_search, upsert_listings
+
+        conn = get_connection()
+        upsert_listings(conn, [listing.model_dump(mode="json") for listing in listings])
+        record_search(conn, user_id=None, query=request.query.model_dump(), result_count=len(listings))
+        conn.close()
+    except RuntimeError:
+        pass  # DATABASE_URL not configured — fine for local dev / Phase 0 without persistence.
+
     return {"strategy": strategy, "listings": listings}
 
 

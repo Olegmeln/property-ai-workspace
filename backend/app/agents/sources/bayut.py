@@ -22,20 +22,22 @@ from typing import Any
 
 import httpx
 
-from app.core.settings import get_settings
+from app.core.source_config import get_source_config
 from app.models.schemas import RawListing
 
 logger = logging.getLogger(__name__)
 
 
-def search(params: dict[str, Any], target_count: int = 100) -> list[RawListing]:
+def search(
+    params: dict[str, Any], target_count: int = 100, user_id: str | None = None
+) -> list[RawListing]:
     """Главная точка входа агента."""
-    settings = get_settings()
-    if not settings.rapidapi_key:
+    config = get_source_config(user_id)
+    if not config.rapidapi_key:
         logger.info("RAPIDAPI_KEY not set; bayut-rest agent skipped.")
         return []
 
-    host = settings.bayut_rapidapi_host
+    host = config.bayut_rapidapi_host
     url = f"https://{host}/properties/list"
 
     # Bayut'овский API пагинирует по hits_per_page; max обычно 25.
@@ -43,7 +45,7 @@ def search(params: dict[str, Any], target_count: int = 100) -> list[RawListing]:
     pages_needed = (target_count + page_size - 1) // page_size
 
     headers = {
-        "x-rapidapi-key": settings.rapidapi_key,
+        "x-rapidapi-key": config.rapidapi_key,
         "x-rapidapi-host": host,
     }
 

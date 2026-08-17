@@ -1,4 +1,5 @@
 import type { Listing, StructuredQuery } from "../types";
+import { fromRawListings, toRefinedQuery, type RawListing } from "./adapters";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -23,11 +24,13 @@ export async function buildQuery(userText: string, params: Record<string, unknow
   });
 }
 
-export async function searchListings(query: StructuredQuery, params: Record<string, unknown>) {
-  return postJson<{ query: StructuredQuery; params: Record<string, unknown> }, Listing[]>("/search", {
-    query,
-    params
-  });
+export async function searchListings(query: StructuredQuery, _params: Record<string, unknown>) {
+  const response = await postJson<
+    { query: ReturnType<typeof toRefinedQuery> },
+    { strategy: unknown; listings: RawListing[] }
+  >("/search", { query: toRefinedQuery(query) });
+
+  return fromRawListings(response.listings);
 }
 
 export async function normalizeListings(listings: Listing[], params: Record<string, unknown>) {

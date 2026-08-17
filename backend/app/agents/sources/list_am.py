@@ -28,9 +28,13 @@ import re
 from typing import Any
 
 import httpx
+import redis
 from selectolax.parser import HTMLParser
 
+from app.core.settings import get_settings
+from app.core.source_config import get_source_config
 from app.models.schemas import RawListing
+from app.services.rate_limiter import check_and_consume
 
 logger = logging.getLogger(__name__)
 
@@ -40,9 +44,14 @@ USER_AGENT = (
     "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 )
 
+_redis_client = redis.Redis.from_url(get_settings().redis_url)
 
-def search(params: dict[str, Any], target_count: int = 100) -> list[RawListing]:
+
+def search(
+    params: dict[str, Any], target_count: int = 100, user_id: str | None = None
+) -> list[RawListing]:
     """Главная точка входа агента."""
+    config = get_source_config(user_id)
     deal = params.get("deal", "buy")
     type_code = "1" if deal == "buy" else "3"
     price_max = params.get("price_max")
@@ -61,6 +70,16 @@ def search(params: dict[str, Any], target_count: int = 100) -> list[RawListing]:
         follow_redirects=True,
     ) as client:
         while len(listings) < target_count and page <= 10:
+            allowed = check_and_consume(
+                _redis_client,
+                key=f"list-am:{user_id or 'global'}",
+                max_per_window=config.list_am_requests_per_minute,
+                window_seconds=60,
+            )
+            if not allowed:
+                logger.warning("list.am rate limit hit for %s; stopping early", user_id or "global")
+                break
+
             q = dict(query)
             if page > 1:
                 q["pn"] = page  # page number
